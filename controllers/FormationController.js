@@ -1,76 +1,53 @@
 const Formation = require("../models/Formation");
 
-const ajouterFormation = async (req, res) => {
-  try {
-    const payload = { ...req.body };
-
-    if (req.file) {
-      payload.image = `cours/${req.file.filename}`;
-    }
-
-    if (payload.duree !== undefined) {
-      const n = Number(payload.duree);
-      if (!Number.isNaN(n)) payload.duree = n;
-    }
-
-    const formation = await Formation.create(payload);
-    res.status(201).json(formation);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-const listerFormations = async (req, res) => {
+// GET
+const getFormations = async (req, res) => {
   try {
     const formations = await Formation.find();
     res.json(formations);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-const modifierFormation = async (req, res) => {
+// POST
+const createFormation = async (req, res) => {
   try {
-    const payload = { ...req.body };
-
-    if (req.file) {
-      payload.image = `cours/${req.file.filename}`;
-    }
-
-    if (payload.duree !== undefined) {
-      const n = Number(payload.duree);
-      if (!Number.isNaN(n)) payload.duree = n;
-    }
-
-    const formation = await Formation.findByIdAndUpdate(
-      req.params.id,
-      payload,
-      { new: true, runValidators: true }
-    );
-    if (!formation) {
-      return res.status(404).json({ message: "Formation non trouvée" });
-    }
-    res.json(formation);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+    const formation = new Formation(req.body);
+    const saved = await formation.save();
+    res.status(201).json(saved);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-const supprimerFormation = async (req, res) => {
+// PUT
+const updateFormation = async (req, res) => {
   try {
-    const formation = await Formation.findByIdAndDelete(req.params.id);
-    if (!formation) {
-      return res.status(404).json({ message: "Formation non trouvée" });
-    }
-    res.json({ message: "Formation supprimée avec succès" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const { id } = req.params;
+    const updated = await Formation.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: "Formation non trouvée" });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// DELETE
+const deleteFormation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const formation = await Formation.findByIdAndDelete(id);
+    if (!formation) return res.status(404).json({ message: "Formation non trouvée" });
+    res.json({ message: "Formation supprimée" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
 module.exports = {
-  ajouterFormation,
-  listerFormations,
-  modifierFormation,
-  supprimerFormation
+  getFormations,
+  createFormation,
+  updateFormation,
+  deleteFormation,
 };
