@@ -19,6 +19,11 @@ router.get(
   projectController.listerProjets
 );
 
+router.get(
+  "/:id",
+  projectController.getProjetById
+);
+
 router.put(
   "/modifier/:id",
   protect,

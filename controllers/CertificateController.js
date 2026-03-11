@@ -29,6 +29,18 @@ const listerCertificats = async (req, res) => {
   }
 };
 
+const getCertificatById = async (req, res) => {
+  try {
+    const certificat = await Certificate.findById(req.params.id);
+    if (!certificat) {
+      return res.status(404).json({ message: "Certificat non trouvé" });
+    }
+    res.json(certificat);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const modifierCertificat = async (req, res) => {
   try {
     const payload = { ...req.body };
@@ -71,6 +83,7 @@ const supprimerCertificat = async (req, res) => {
 module.exports = {
   ajouterCertificat,
   listerCertificats,
+  getCertificatById,
   modifierCertificat,
   supprimerCertificat
 };

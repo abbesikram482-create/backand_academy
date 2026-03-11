@@ -5,6 +5,7 @@ const path = require("path");
 
 const {
   getFormations,
+  getFormationById,
   createFormation,
   updateFormation,
   deleteFormation,
@@ -24,6 +25,7 @@ const upload = multer({ storage });
 
 // -------- ROUTES --------
 router.get("/", getFormations);
+router.get("/:id", getFormationById);
 
 router.post("/", upload.single("image"), createFormation);
 

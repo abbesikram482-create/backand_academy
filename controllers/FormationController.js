@@ -10,10 +10,26 @@ const getFormations = async (req, res) => {
   }
 };
 
+// GET BY ID
+const getFormationById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const formation = await Formation.findById(id);
+    if (!formation) return res.status(404).json({ message: "Formation non trouvée" });
+    res.json(formation);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // POST
 const createFormation = async (req, res) => {
   try {
-    const formation = new Formation(req.body);
+    const formationData = { ...req.body };
+    if (req.file) {
+      formationData.image = req.file.filename;
+    }
+    const formation = new Formation(formationData);
     const saved = await formation.save();
     res.status(201).json(saved);
   } catch (err) {
@@ -25,7 +41,11 @@ const createFormation = async (req, res) => {
 const updateFormation = async (req, res) => {
   try {
     const { id } = req.params;
-    const updated = await Formation.findByIdAndUpdate(id, req.body, { new: true });
+    const updateData = { ...req.body };
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+    const updated = await Formation.findByIdAndUpdate(id, updateData, { new: true });
     if (!updated) return res.status(404).json({ message: "Formation non trouvée" });
     res.json(updated);
   } catch (err) {
@@ -47,6 +67,7 @@ const deleteFormation = async (req, res) => {
 
 module.exports = {
   getFormations,
+  getFormationById,
   createFormation,
   updateFormation,
   deleteFormation,

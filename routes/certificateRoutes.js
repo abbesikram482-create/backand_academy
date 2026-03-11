@@ -19,6 +19,11 @@ router.get(
   certificateController.listerCertificats
 );
 
+router.get(
+  "/:id",
+  certificateController.getCertificatById
+);
+
 router.put(
   "/modifier/:id",
   protect,

@@ -25,47 +25,62 @@ async function main() {
 
   let seeded = 0;
 
-  const formationCount = await Formation.countDocuments();
+  // Clear existing to apply image updates
+  await Formation.deleteMany({});
+  const formationCount = 0;
+
   if (formationCount === 0) {
 
-  const formations = [
-    {
-      titre: "Fullstack JavaScript (MERN)",
-      description:
-        "De zéro à une application complète: API Express, MongoDB, Auth JWT, React + Vite, déploiement.",
-      duree: 8,
-    },
-    {
-      titre: "React Moderne + Tailwind",
-      description:
-        "Composants, hooks, patterns, performance, design system Tailwind et UI responsive.",
-      duree: 4,
-    },
-    {
-      titre: "Node.js & API REST Pro",
-      description:
-        "Architecture controllers/routes, validation, sécurité, uploads, pagination et bonnes pratiques.",
-      duree: 5,
-    },
-    {
-      titre: "MongoDB + Mongoose",
-      description:
-        "Schémas, relations, index, agrégations, optimisation des requêtes et modélisation.",
-      duree: 3,
-    },
-    {
-      titre: "UI/UX pour développeurs",
-      description:
-        "Hiérarchie visuelle, typographie, couleurs, accessibilité, micro-interactions et design responsive.",
-      duree: 3,
-    },
-    {
-      titre: "Git & Workflow Pro",
-      description:
-        "Branching, PRs, conventions, résolution de conflits, releases et collaboration en équipe.",
-      duree: 2,
-    },
-  ];
+    const formations = [
+      {
+        titre: "Fullstack JavaScript (MERN)",
+        description:
+          "De zéro à une application complète: API Express, MongoDB, Auth JWT, React + Vite, déploiement.",
+        duree: 8,
+        prix: 200,
+        image: "cours/seed1.jpg",
+      },
+      {
+        titre: "React Moderne + Tailwind",
+        description:
+          "Composants, hooks, patterns, performance, design system Tailwind et UI responsive.",
+        duree: 4,
+        prix: 150,
+        image: "cours/seed2.jpg",
+      },
+      {
+        titre: "Node.js & API REST Pro",
+        description:
+          "Architecture controllers/routes, validation, sécurité, uploads, pagination et bonnes pratiques.",
+        duree: 5,
+        prix: 180,
+        image: "cours/seed3.jpg",
+      },
+      {
+        titre: "MongoDB + Mongoose",
+        description:
+          "Schémas, relations, index, agrégations, optimisation des requêtes et modélisation.",
+        duree: 3,
+        prix: 100,
+        image: "cours/seed4.jpg",
+      },
+      {
+        titre: "UI/UX pour développeurs",
+        description:
+          "Hiérarchie visuelle, typographie, couleurs, accessibilité, micro-interactions et design responsive.",
+        duree: 3,
+        prix: 120,
+        image: "cours/seed5.jpg",
+      },
+      {
+        titre: "Git & Workflow Pro",
+        description:
+          "Branching, PRs, conventions, résolution de conflits, releases et collaboration en équipe.",
+        duree: 2,
+        prix: 80,
+        image: "cours/seed6.jpg",
+      },
+    ];
 
     await Formation.insertMany(formations);
     console.log(`✅ Seeded ${formations.length} formations`);

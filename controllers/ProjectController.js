@@ -28,6 +28,18 @@ const listerProjets = async (req, res) => {
   }
 };
 
+const getProjetById = async (req, res) => {
+  try {
+    const projet = await Project.findById(req.params.id);
+    if (!projet) {
+      return res.status(404).json({ message: "Projet non trouvé" });
+    }
+    res.json(projet);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const modifierProjet = async (req, res) => {
   try {
     const payload = { ...req.body };
@@ -69,6 +81,7 @@ const supprimerProjet = async (req, res) => {
 module.exports = {
   ajouterProjet,
   listerProjets,
+  getProjetById,
   modifierProjet,
   supprimerProjet
 };
